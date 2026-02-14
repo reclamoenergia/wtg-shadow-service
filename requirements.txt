@@ -1,3 +1,5 @@
 numpy
 pvlib
 pandas
+fastapi
+uvicorn
