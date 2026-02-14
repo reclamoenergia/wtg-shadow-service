@@ -10,7 +10,7 @@ from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
 
 from model.shadow import run_annual_shadow_hours
-from io.esri_ascii import write_esri_ascii
+from shadow_io.esri_ascii import write_esri_ascii
 
 app = FastAPI(title="WTG Shadow Service")
 
