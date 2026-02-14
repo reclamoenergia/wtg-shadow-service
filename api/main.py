@@ -1,13 +1,7 @@
 from fastapi import FastAPI
 
-app = FastAPI()
+app = FastAPI(title="WTG Shadow Service")
 
-
-@app.get('/health')
-def health() -> dict[str, str]:
-    return {'status': 'ok'}
-
-
-@app.post('/jobs')
-def create_job() -> dict[str, str]:
-    return {'status': 'ok'}
+@app.get("/health")
+def health():
+    return {"status": "ok"}
