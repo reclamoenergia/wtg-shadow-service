@@ -81,6 +81,19 @@ Base.metadata.create_all(engine)
 
 app = FastAPI(title="Wind Shadow Studio API")
 
+from fastapi.middleware.cors import CORSMiddleware
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 def tr(lang: str, key: str) -> str:
     lang = lang if lang in {"it", "en"} else "it"
@@ -187,6 +200,18 @@ def _ensure_grid_constraints(grid: Grid, turbines: list[Turbine]) -> tuple[list[
     if not 15 <= grid.cellsize_m <= 50:
         raise HTTPException(400, "cellsize_m must be between 15 and 50")
     bbox = grid.bbox or _bbox_from_turbines(turbines, grid.buffer_m or 5000)
+        # Snap bbox to cellsize grid to avoid "multiples of cellsize" failures
+    xmin, ymin, xmax, ymax = bbox
+    cs = float(grid.cellsize_m)
+
+    import math
+    xmin = math.floor(xmin / cs) * cs
+    ymin = math.floor(ymin / cs) * cs
+    xmax = math.ceil(xmax / cs) * cs
+    ymax = math.ceil(ymax / cs) * cs
+
+    bbox = [xmin, ymin, xmax, ymax]
+
     xmin, ymin, xmax, ymax = bbox
     w = xmax - xmin
     h = ymax - ymin
@@ -375,6 +400,14 @@ def _process_job(job_id: str):
                 "turbines_geojson": {"type": "FeatureCollection", "features": turb_features},
                 "points_geojson": {"type": "FeatureCollection", "features": point_features},
             }
+
+            job.outputs = {
+                "asc": f"/download/{job.id}/asc",
+                 "geotiff": f"/download/{job.id}/geotiff",
+                 "report_pdf": f"/download/{job.id}/report_pdf",
+                "preview_png": f"/download/{job.id}/preview_png",
+            }
+
             pdf = _generate_pdf(job, str(png_path), lang)
             _upsert_file(db, job_id, "report_pdf", pdf)
             job.status = "completed"
@@ -386,6 +419,14 @@ def _process_job(job_id: str):
             job.status = "failed"
             job.error_code = "PROCESSING_ERROR"
             job.error_detail = str(exc)
+
+            job.outputs = {
+                "asc": f"/download/{job.id}/asc",
+                "geotiff": f"/download/{job.id}/geotiff",
+                "preview_png": f"/download/{job.id}/preview_png",
+                 "report_pdf": f"/download/{job.id}/report_pdf"
+            }
+
             db.commit()
 
 
