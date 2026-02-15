@@ -1,0 +1,22 @@
+{
+  "ui": {
+    "description": "Piattaforma per simulare ore annue di ombra e produrre output tecnici/commerciali.",
+    "start": "Avvia calcolo",
+    "status": "Stato",
+    "pay": "Paga e sblocca download"
+  },
+  "progress": {
+    "queued": "Job in coda",
+    "prepare": "Preparazione dati",
+    "compute": "Calcolo ombre annuali",
+    "outputs": "Generazione output",
+    "done": "Completato"
+  },
+  "errors": {
+    "min_solar": "L'elevazione solare minima deve essere tra 0 e 20°"
+  },
+  "pdf": {
+    "title": "Report commerciale Wind Shadow Studio",
+    "assumptions": "Assunzioni modello: scenario worst-case, terreno piano, senza vegetazione/edifici."
+  }
+}

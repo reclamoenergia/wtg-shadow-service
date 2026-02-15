@@ -1,0 +1,22 @@
+{
+  "ui": {
+    "description": "Platform to simulate annual shadow hours and generate technical/commercial outputs.",
+    "start": "Start computation",
+    "status": "Status",
+    "pay": "Pay and unlock downloads"
+  },
+  "progress": {
+    "queued": "Job queued",
+    "prepare": "Preparing data",
+    "compute": "Computing annual shadow",
+    "outputs": "Generating outputs",
+    "done": "Completed"
+  },
+  "errors": {
+    "min_solar": "Minimum solar elevation must be between 0 and 20°"
+  },
+  "pdf": {
+    "title": "Wind Shadow Studio commercial report",
+    "assumptions": "Model assumptions: worst-case scenario, flat terrain, no vegetation/buildings."
+  }
+}
