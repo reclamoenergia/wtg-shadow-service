@@ -4,3 +4,12 @@ pandas
 fastapi
 uvicorn
 pydantic
+sqlalchemy
+alembic
+psycopg2-binary
+rasterio
+pyproj
+matplotlib
+reportlab
+stripe
+python-multipart
